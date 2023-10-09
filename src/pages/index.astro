@@ -1,0 +1,33 @@
+---
+import "@/styles/globals.scss";
+import "@lumeweb/sdk/lib/style.css";
+import ArrowSvg from "@/components/Arrow";
+import Lume from "../components/Lume";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <main class="flex min-h-screen flex-col items-center justify-between">
+      <header class="relative h-14 px-2 pl-7 py-2 w-full bg-neutral-900">
+        <div
+          class="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center"
+        >
+          <Lume client:only="react" />
+          <button
+            class="absolute bg-neutral-700 text-neutral-400 px-4 py-2 right-0 rounded-r-full"
+          >
+            Navigate
+            <ArrowSvg class="inline-block ml-2 -mt-1 w-5 h-5" />
+          </button>
+        </div>
+      </header>
+    </main>
+  </body>
+</html>
