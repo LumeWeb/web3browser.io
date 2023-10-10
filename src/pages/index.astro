@@ -14,7 +14,7 @@ import Lume from "../components/Lume";
     <title>Astro</title>
   </head>
   <body>
-    <main class="flex min-h-screen flex-col items-center justify-between">
+    <main class="flex h-screen max-h-screen flex-col items-center justify-between">
       <header class="relative h-14 px-2 pl-2 py-2 w-full bg-neutral-900 flex">
         <div
           class="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [>input:focus]:ring-2 [>input:focus]:ring-white"
@@ -31,6 +31,8 @@ import Lume from "../components/Lume";
           <Lume client:only="react" />
         </div>
       </header>
+        <iframe id="mainIframe" src="https://google.com" class="w-full h-full">
+        </iframe>
     </main>
   </body>
 </html>
