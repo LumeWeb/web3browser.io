@@ -13,7 +13,7 @@ const Lume = () => {
     <>
       <LumeIdentity>
         <LumeIdentityTrigger asChild>
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
             <LumeDashboard>
               <LumeDashboardTrigger asChild>
                 <button className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black">
