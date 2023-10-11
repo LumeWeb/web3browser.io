@@ -1,8 +1,7 @@
 ---
+import App from "../components/App";
 import "@lumeweb/sdk/lib/style.css";
 import "@/styles/globals.scss";
-import ArrowSvg from "@/components/Arrow";
-import Lume from "../components/Lume";
 ---
 
 <html lang="en">
@@ -14,25 +13,10 @@ import Lume from "../components/Lume";
     <title>Astro</title>
   </head>
   <body>
-    <main class="flex h-screen max-h-screen flex-col items-center justify-between">
-      <header class="relative h-14 px-2 pl-2 py-2 w-full bg-neutral-900 flex">
-        <div
-          class="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [>input:focus]:ring-2 [>input:focus]:ring-white"
-        >
-        <input class="ml-3 text-gray-300 w-[calc(100%-150px)] h-full bg-transparent focus:ring-0 focus:outline-none focus:border-0"/>
-          <button
-            class="absolute bg-neutral-700 text-neutral-400 px-4 py-2 right-0 rounded-r-full"
-          >
-            Navigate
-            <ArrowSvg className="inline-block ml-2 -mt-1 w-5 h-5" />
-          </button>
-        </div>
-        <div class="w-32 flex justify-end">
-          <Lume client:only="react" />
-        </div>
-      </header>
-        <iframe id="mainIframe" src="https://google.com" class="w-full h-full">
-        </iframe>
+    <main
+      class="flex h-screen max-h-screen flex-col items-center justify-between"
+    >
+      <App client:only="react" />
     </main>
   </body>
 </html>

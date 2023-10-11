@@ -1,0 +1,30 @@
+{
+  "preset": [
+    "@lumeweb/node-library-preset"
+  ],
+  "config": {
+    "tsconfig.build": {
+      "include": {
+        "0": "{buildSource}/backend"
+      },
+      "compilerOptions": {
+        "outDir": "{source}"
+      }
+    }
+  },
+  "variable": {
+    "source": "build",
+    "output": "dist",
+    "buildSource": "src"
+  },
+  "scripts": {
+    "build:vite": "vite build -c vite.config.backend.js",
+    "build:astro": "astro build",
+    "build": "run-s clean build:astro build:typescript:* build:vite",
+    "clean:buildOutput": "shx rm -rf {source}",
+    "build:typescript:mjs:tsc": "tsc -p tsconfig.backend.json",
+    "build:typescript:mjs:alias:lib": "tsc-alias --resolve-full-paths --dir {output} -p tsconfig.backend.json",
+    "build:typescript:mjs:alias:root": "tsc-alias --resolve-full-paths --dir . -p tsconfig.backend.json",
+    "build:typescript:mjs:fix": "tsc-esm-fix --sourceMap --target {output} -p tsconfig.backend.json"
+  }
+}

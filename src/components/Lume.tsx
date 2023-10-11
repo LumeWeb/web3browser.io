@@ -6,13 +6,12 @@ import {
   useLume,
   LumeProvider,
 } from "@lumeweb/sdk";
-
 const Lume = () => {
-  const { isLoggedIn } = useLume();
+  const { isLoggedIn, ready } = useLume();
   return (
     <>
       <LumeIdentity>
-        <LumeIdentityTrigger asChild>
+        <LumeIdentityTrigger asChild disabled={!ready}>
           {isLoggedIn ? (
             <LumeDashboard>
               <LumeDashboardTrigger asChild>

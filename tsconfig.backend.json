@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "module": "NodeNext",
+    "target": "ES2022",
+    "declaration": true,
+    "inlineSourceMap": true,
+    "noImplicitUseStrict": false,
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "alwaysStrict": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "lib": [
+      "ES2020",
+      "ES2021",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/backend"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "lib"
+  ]
+}
