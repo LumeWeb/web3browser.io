@@ -21,6 +21,7 @@ import Arrow from "@/components/Arrow.tsx";
 import type React from "react";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { useLume } from "@lumeweb/sdk";
 
 let BOOT_FUNCTIONS: (() => Promise<any>)[] = [];
 
@@ -115,6 +116,7 @@ async function bootup() {
 
 export function Navigator() {
   const { url, setUrl } = useBrowserState();
+  const { isLoggedIn } = useLume();
   const inputRef = createRef<HTMLInputElement>();
 
   const browse = () => {
@@ -145,8 +147,8 @@ export function Navigator() {
 
   return (
     <>
-      <NavInput ref={inputRef} />
-      <Button onClick={browse}>
+      <NavInput ref={inputRef} disabled={!isLoggedIn} />
+      <Button onClick={browse} disabled={!isLoggedIn}>
         Navigate
         <Arrow />
       </Button>

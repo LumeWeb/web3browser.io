@@ -6,7 +6,8 @@ import {
   useLume,
   LumeProvider,
 } from "@lumeweb/sdk";
-const Lume = () => {
+
+export default function () {
   const { isLoggedIn, ready } = useLume();
   return (
     <>
@@ -28,13 +29,5 @@ const Lume = () => {
         </LumeIdentityTrigger>
       </LumeIdentity>
     </>
-  );
-};
-
-export default function () {
-  return (
-    <LumeProvider>
-      <Lume />
-    </LumeProvider>
   );
 }
