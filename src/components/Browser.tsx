@@ -21,7 +21,7 @@ import Arrow from "@/components/Arrow.tsx";
 import type React from "react";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useLume } from "@lumeweb/sdk";
+import { type LumeContextType, useLume } from "@lumeweb/sdk";
 
 let BOOT_FUNCTIONS: (() => Promise<any>)[] = [];
 
@@ -58,9 +58,7 @@ export function useBrowserState() {
   return context;
 }
 
-async function boot() {
-  const lume = useLume();
-
+async function boot(lume: LumeContextType) {
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
 
@@ -167,9 +165,10 @@ export function Navigator() {
 
 export function Browser() {
   const { url } = useBrowserState();
+  const lume = useLume();
 
   useEffect(() => {
-    boot();
+    boot(lume);
   }, []);
 
   return <iframe src={url} className="w-full h-full"></iframe>;
