@@ -56,7 +56,6 @@
         "presetter": "^4.4.1",
         "presetter-preset-esm": "^4.4.1",
         "presetter-preset-strict": "^4.4.1",
-        "prettier": "^3.0.3",
         "prettier-plugin-astro": "^0.12.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -71,6 +70,7 @@
         "vite-plugin-optimizer": "^1.4.2"
     },
     "overrides": {
-        "@lumeweb/libkernel": "0.1.0-develop.66"
+        "@lumeweb/libkernel": "0.1.0-develop.66",
+        "prettier": "3.0.3"
     }
 }
