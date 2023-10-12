@@ -23,7 +23,7 @@
         "@lumeweb/kernel-swarm-client": "^0.1.0-develop.11",
         "@lumeweb/libresolver": "^0.1.0-develop.1",
         "@lumeweb/tld-enum": "^0.1.0-develop.1",
-        "@lumeweb/sdk": "^0.1.0-develop.25",
+        "@lumeweb/sdk": "^0.1.0-develop.26",
         "@radix-ui/react-form": "^0.0.3",
         "@radix-ui/react-slot": "^1.0.2",
         "@types/react": "^18.2.25",
