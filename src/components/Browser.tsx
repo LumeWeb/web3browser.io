@@ -95,6 +95,7 @@ async function boot(lume: LumeContextType) {
   BOOT_FUNCTIONS.push(async () => await handshakeClient.register());
   BOOT_FUNCTIONS.push(async () => await ethClient.register());
   BOOT_FUNCTIONS.push(async () => await ipfsClient.register());
+  BOOT_FUNCTIONS.push(async () => lume.setReady(true));
 
   const resolvers = [
     "zrjCnUBqmBqXXcc2yPnq517sXQtNcfZ2BHgnVTcbhSYxko7", // CID
@@ -107,8 +108,6 @@ async function boot(lume: LumeContextType) {
   }
 
   await bootup();
-
-  lume.setReady(true);
 
   await Promise.all([
     ethClient.ready(),
