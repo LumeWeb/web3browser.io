@@ -24,7 +24,7 @@ export default function () {
           </LumeIdentityTrigger>
         </LumeIdentity>
       )}
-      {isLoggedIn && ready && <LumeDashboard />}
+      {isLoggedIn && <LumeDashboard />}
     </>
   );
 }
