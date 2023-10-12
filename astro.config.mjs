@@ -8,6 +8,9 @@ import optimizer from 'vite-plugin-optimizer'
 export default defineConfig({
   integrations: [react(), tailwind({ applyBaseStyles: false, })],
   vite: {
+    build:{
+      minify: false
+    },
     plugins: [
       optimizer({
         'node-fetch':
