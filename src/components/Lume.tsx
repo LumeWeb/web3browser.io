@@ -1,10 +1,8 @@
 import {
+  LumeDashboard,
   LumeIdentity,
   LumeIdentityTrigger,
-  LumeDashboardTrigger,
-  LumeDashboard,
   useLume,
-  LumeProvider,
 } from "@lumeweb/sdk";
 
 export default function () {
@@ -13,24 +11,17 @@ export default function () {
     <>
       <LumeIdentity>
         <LumeIdentityTrigger asChild disabled={!ready}>
-          {isLoggedIn ? (
-            <LumeDashboard>
-              <LumeDashboardTrigger asChild>
-                <button className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black">
-                  Check Status
-                </button>
-              </LumeDashboardTrigger>
-            </LumeDashboard>
-          ) : (
+          {
             <button
               className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black"
               disabled={!ready}
             >
               Login
             </button>
-          )}
+          }
         </LumeIdentityTrigger>
       </LumeIdentity>
+      {isLoggedIn && ready && <LumeDashboard />}
     </>
   );
 }
