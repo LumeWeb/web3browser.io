@@ -22,7 +22,10 @@ export default function () {
               </LumeDashboardTrigger>
             </LumeDashboard>
           ) : (
-            <button className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black">
+            <button
+              className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black"
+              disabled={!ready}
+            >
               Login
             </button>
           )}
