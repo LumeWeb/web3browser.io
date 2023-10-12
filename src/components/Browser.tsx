@@ -65,10 +65,12 @@ async function boot(lume: LumeContextType) {
   await kernel.serviceWorkerReady();
 
   kernel.init().then(() => {
-    lume.setReady(true);
+    lume.setInited(true);
   });
 
   await kernelLoaded();
+
+  lume.setIsLoggedIn(true);
 
   BOOT_FUNCTIONS.push(
     async () =>
@@ -106,7 +108,7 @@ async function boot(lume: LumeContextType) {
 
   await bootup();
 
-  lume.setIsLoggedIn(true);
+  lume.setReady(true);
 
   await Promise.all([
     ethClient.ready(),
