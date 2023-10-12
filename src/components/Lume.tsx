@@ -6,15 +6,18 @@ import {
 } from "@lumeweb/sdk";
 
 export default function () {
-  const { isLoggedIn, ready } = useLume();
+  const { isLoggedIn, ready, inited } = useLume();
+
+  let loginDisabled = !inited || isLoggedIn;
+
   return (
     <>
       <LumeIdentity>
-        <LumeIdentityTrigger asChild disabled={!ready}>
+        <LumeIdentityTrigger asChild disabled={loginDisabled}>
           {
             <button
               className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black disabled:pointer-events-none disabled:opacity-50"
-              disabled={!ready}
+              disabled={loginDisabled}
             >
               Login
             </button>
