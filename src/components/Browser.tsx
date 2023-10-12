@@ -59,10 +59,17 @@ export function useBrowserState() {
 }
 
 async function boot() {
+  const lume = useLume();
+
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
 
   await kernel.serviceWorkerReady();
+
+  kernel.init().then(() => {
+    lume.setReady(true);
+  });
+
   await kernelLoaded();
 
   BOOT_FUNCTIONS.push(
@@ -100,6 +107,8 @@ async function boot() {
   }
 
   await bootup();
+
+  lume.setIsLoggedIn(true);
 
   await Promise.all([
     ethClient.ready(),
