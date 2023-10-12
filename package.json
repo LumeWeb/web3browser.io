@@ -15,7 +15,7 @@
         "@astrojs/tailwind": "^5.0.1",
         "@helia/unixfs": "^1.4.2",
         "@lumeweb/kernel-dns-client": "^0.1.0-develop.7",
-        "@lumeweb/kernel-eth-client": "^0.1.0-develop.16",
+        "@lumeweb/kernel-eth-client": "^0.1.0-develop.17",
         "@lumeweb/kernel-handshake-client": "^0.1.0-develop.9",
         "@lumeweb/kernel-ipfs-client": "^0.1.0-develop.25",
         "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.10",
