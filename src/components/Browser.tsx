@@ -90,8 +90,8 @@ async function boot() {
   BOOT_FUNCTIONS.push(async () => await ipfsClient.register());
 
   const resolvers = [
-    "zdiJdDdBJWAdYFTcRa9So5TQQ9f1pYMiMy4dqYcKp9imomQtR11LJUyJyV", // CID
-    "zdiKvnZYNjDqXaM8uF3pGEs7Tt6jqGc7t7M4eqbvJwpkTnrZymncfUW9Cj", // ENS
+    "zrjCnUBqmBqXXcc2yPnq517sXQtNcfZ2BHgnVTcbhSYxko7", // CID
+    "zrjEYq154PS7boERAbRAKMyRGzAR6CTHVRG6mfi5FV4q9FA", // ENS
     "zrjEH3iojPLr7986o7iCn9THBmJmHiuDWmS1G6oT8DnfuFM", // HNS
   ];
 
