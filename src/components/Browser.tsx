@@ -83,7 +83,7 @@ async function boot(lume: LumeContextType) {
   BOOT_FUNCTIONS.push(
     async () =>
       await peerDiscoveryClient.register(
-        "zrjPHvVJ3j7Jfn834PV4n7KcWbSW7ZHkxvcPCKWjwAcjPX5",
+        "zrjHTx8tSQFWnmZ9JzK7XmJirqJQi2WRBLYp3fASaL2AfBQ",
       ),
   );
   BOOT_FUNCTIONS.push(
