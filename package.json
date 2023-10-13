@@ -19,7 +19,7 @@
         "@lumeweb/kernel-handshake-client": "^0.1.0-develop.9",
         "@lumeweb/kernel-ipfs-client": "^0.1.0-develop.25",
         "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.10",
-        "@lumeweb/kernel-peer-discovery-client": "^0.0.2-develop.17",
+        "@lumeweb/kernel-peer-discovery-client": "^0.0.2-develop.18",
         "@lumeweb/kernel-swarm-client": "^0.1.0-develop.11",
         "@lumeweb/libresolver": "^0.1.0-develop.1",
         "@lumeweb/tld-enum": "^0.1.0-develop.1",
