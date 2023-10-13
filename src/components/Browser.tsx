@@ -118,6 +118,7 @@ async function boot(lume: LumeContextType) {
 
 async function bootup() {
   for (const entry of Object.entries(BOOT_FUNCTIONS)) {
+    console.log(entry[1].toString());
     await entry[1]();
   }
 }
