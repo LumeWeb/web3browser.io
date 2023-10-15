@@ -62,10 +62,10 @@ export default class IPFSProvider implements ContentProvider {
           err = "404";
         }
       }
+    }
 
-      if (err) {
-        throw new Error(err);
-      }
+    if (err) {
+      throw new Error(err);
     }
 
     let bufferRead = 0;
