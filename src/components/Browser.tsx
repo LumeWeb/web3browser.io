@@ -45,7 +45,7 @@ export function BrowserStateProvider({
 }: {
   children: React.ReactElement;
 }) {
-  const [url, setUrl] = useState("about:blank");
+  const [url, setUrl] = useState("");
 
   return (
     <BrowserStateContext.Provider value={{ url, setUrl }}>
@@ -190,5 +190,10 @@ export function Browser() {
     boot(status, auth);
   }, []);
 
-  return <iframe src={`/browse/${url}`} className="w-full h-full"></iframe>;
+  return (
+    <iframe
+      src={url ? `/browse/${url}` : "about:blank"}
+      className="w-full h-full"
+    ></iframe>
+  );
 }
