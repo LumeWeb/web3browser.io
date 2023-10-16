@@ -135,7 +135,7 @@ export function Navigator() {
   const [inputValue, setInputValue] = useState(contextUrl); // Local state for the input value
 
   const browse = useCallback(() => {
-    let input = contextUrl.trim();
+    let input = inputValue.trim();
 
     // If the input doesn't contain a protocol, assume it's http
     if (!input?.match(/^https?:\/\//)) {
