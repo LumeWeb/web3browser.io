@@ -132,10 +132,9 @@ async function bootup() {
 export function Navigator() {
   const { url, setUrl } = useBrowserState();
   const { isLoggedIn } = useAuth();
-  const inputRef = createRef<HTMLInputElement>();
 
   const browse = useCallback(() => {
-    let input = inputRef.current?.value.trim();
+    let input = url.trim();
 
     // If the input doesn't contain a protocol, assume it's http
     if (!input?.match(/^https?:\/\//)) {
@@ -154,7 +153,7 @@ export function Navigator() {
       // Handle invalid URLs here, if needed
       console.error("Invalid URL:", e);
     }
-  }, [inputRef, setUrl]);
+  }, [url, setUrl]);
 
   const NavInput = forwardRef((props: any, ref) => (
     <Input ref={ref} {...props}></Input>
@@ -164,7 +163,7 @@ export function Navigator() {
 
   return (
     <>
-      <NavInput ref={inputRef} disabled={!isLoggedIn} />
+      <NavInput value={url} disabled={!isLoggedIn} />
       <Button onClick={browse} disabled={!isLoggedIn}>
         Navigate
         <Arrow />
