@@ -130,11 +130,12 @@ async function bootup() {
 }
 
 export function Navigator() {
-  const { url, setUrl } = useBrowserState();
+  const { url: contextUrl, setUrl } = useBrowserState();
   const { isLoggedIn } = useAuth();
+  const [inputValue, setInputValue] = useState(contextUrl); // Local state for the input value
 
   const browse = useCallback(() => {
-    let input = url.trim();
+    let input = contextUrl.trim();
 
     // If the input doesn't contain a protocol, assume it's http
     if (!input?.match(/^https?:\/\//)) {
@@ -153,7 +154,7 @@ export function Navigator() {
       // Handle invalid URLs here, if needed
       console.error("Invalid URL:", e);
     }
-  }, [url, setUrl]);
+  }, [contextUrl, setUrl]);
 
   const NavInput = forwardRef((props: any, ref) => (
     <Input ref={ref} {...props}></Input>
@@ -163,7 +164,11 @@ export function Navigator() {
 
   return (
     <>
-      <NavInput value={url} disabled={!isLoggedIn} />
+      <NavInput
+        value={inputValue}
+        onChange={(e: any) => setInputValue(e.target.value)}
+        disabled={!isLoggedIn}
+      />
       <Button onClick={browse} disabled={!isLoggedIn}>
         Navigate
         <Arrow />
