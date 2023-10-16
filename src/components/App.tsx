@@ -22,7 +22,9 @@ export default function () {
             </div>
           </header>
         </AuthProvider>
-        <Browser />
+        <LumeStatusProvider>
+          <Browser />
+        </LumeStatusProvider>
       </>
     </BrowserStateProvider>
   );
