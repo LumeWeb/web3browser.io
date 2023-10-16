@@ -134,7 +134,7 @@ export function Navigator() {
   const { isLoggedIn } = useAuth();
   const [inputValue, setInputValue] = useState(contextUrl); // Local state for the input value
 
-  const browse = useCallback(() => {
+  const browse = () => {
     let input = inputValue.trim();
 
     // If the input doesn't contain a protocol, assume it's http
@@ -154,7 +154,7 @@ export function Navigator() {
       // Handle invalid URLs here, if needed
       console.error("Invalid URL:", e);
     }
-  }, [contextUrl, setUrl]);
+  };
 
   useEffect(() => {
     setInputValue(contextUrl); // Update local state when context's url changes
@@ -170,10 +170,7 @@ export function Navigator() {
     <>
       <NavInput
         value={inputValue}
-        onChange={(e: any) => {
-          debugger;
-          setInputValue(e.target.value);
-        }}
+        onChange={(e: any) => setInputValue(e.target.value)}
         disabled={!isLoggedIn}
       />
       <Button onClick={browse} disabled={!isLoggedIn}>
