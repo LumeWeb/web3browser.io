@@ -156,6 +156,10 @@ export function Navigator() {
     }
   }, [contextUrl, setUrl]);
 
+  useEffect(() => {
+    setInputValue(contextUrl); // Update local state when context's url changes
+  }, [contextUrl]);
+
   const NavInput = forwardRef((props: any, ref) => (
     <Input ref={ref} {...props}></Input>
   ));
