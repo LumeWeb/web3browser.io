@@ -147,7 +147,7 @@ export function Navigator() {
       const url = new URL(input);
 
       setUrl(
-        `/browse/${url.hostname}${url.pathname}${url.search}${url.hash}` ||
+        `${url.hostname}${url.pathname}${url.search}${url.hash}` ||
           "about:blank",
       );
     } catch (e) {
@@ -190,5 +190,5 @@ export function Browser() {
     boot(status, auth);
   }, []);
 
-  return <iframe src={url} className="w-full h-full"></iframe>;
+  return <iframe src={`/browse/${url}`} className="w-full h-full"></iframe>;
 }
