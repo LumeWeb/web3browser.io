@@ -4,7 +4,11 @@ import {
   Navigator,
 } from "@/components/Browser.tsx";
 import Lume from "@/components/Lume.tsx";
-import { AuthProvider, LumeStatusProvider } from "@lumeweb/sdk";
+import {
+  AuthProvider,
+  LumeStatusProvider,
+  NetworksProvider,
+} from "@lumeweb/sdk";
 
 export default function () {
   return (
@@ -17,7 +21,9 @@ export default function () {
                 <Navigator />
               </div>
               <div className="w-32 flex justify-end">
-                <Lume />
+                <NetworksProvider>
+                  <Lume />
+                </NetworksProvider>
               </div>
             </header>
 
