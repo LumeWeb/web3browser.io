@@ -21,10 +21,10 @@ export default function () {
               <MemeoedNavigator />
             </div>
             <div className="w-32 flex justify-end">
-              <MemeoedLume />
+              <Lume />
             </div>
           </header>
-          <MemeoedBrowser />
+          <Browser />
         </>
       </BrowserStateProvider>
     </LumeProvider>
