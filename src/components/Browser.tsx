@@ -161,7 +161,6 @@ export function Navigator() {
   }, [contextUrl]);
 
   const NavInput = forwardRef((props: any, ref) => {
-    debugger;
     return <Input ref={ref} {...props}></Input>;
   });
 
@@ -171,7 +170,10 @@ export function Navigator() {
     <>
       <NavInput
         value={inputValue}
-        onChange={(e: any) => setInputValue(e.target.value)}
+        onChange={(e: any) => {
+          debugger;
+          setInputValue(e.target.value);
+        }}
         disabled={!isLoggedIn}
       />
       <Button onClick={browse} disabled={!isLoggedIn}>
