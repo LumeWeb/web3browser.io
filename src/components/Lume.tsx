@@ -2,11 +2,13 @@ import {
   LumeDashboard,
   LumeIdentity,
   LumeIdentityTrigger,
-  useLume,
+  useAuth,
+  useLumeStatus,
 } from "@lumeweb/sdk";
 
 export default function () {
-  const { isLoggedIn, ready, inited } = useLume();
+  const { isLoggedIn } = useAuth();
+  const { ready, inited } = useLumeStatus();
 
   return (
     <>

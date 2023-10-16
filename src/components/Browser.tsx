@@ -21,7 +21,12 @@ import Arrow from "@/components/Arrow.tsx";
 import type React from "react";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { type LumeContextType, useLume } from "@lumeweb/sdk";
+import {
+  type AuthContextType,
+  type LumeStatusContextType,
+  useAuth,
+  useLumeStatus,
+} from "@lumeweb/sdk";
 
 let BOOT_FUNCTIONS: (() => Promise<any>)[] = [];
 
@@ -58,19 +63,19 @@ export function useBrowserState() {
   return context;
 }
 
-async function boot(lume: LumeContextType) {
+async function boot(status: LumeStatusContextType, auth: AuthContextType) {
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
 
   await kernel.serviceWorkerReady();
 
   kernel.init().then(() => {
-    lume.setInited(true);
+    status.setInited(true);
   });
 
   await kernelLoaded();
 
-  lume.setIsLoggedIn(true);
+  auth.setIsLoggedIn(true);
 
   BOOT_FUNCTIONS.push(
     async () =>
@@ -95,7 +100,7 @@ async function boot(lume: LumeContextType) {
   BOOT_FUNCTIONS.push(async () => await handshakeClient.register());
   BOOT_FUNCTIONS.push(async () => await ethClient.register());
   BOOT_FUNCTIONS.push(async () => await ipfsClient.register());
-  BOOT_FUNCTIONS.push(async () => lume.setReady(true));
+  BOOT_FUNCTIONS.push(async () => status.setReady(true));
 
   const resolvers = [
     "zrjCnUBqmBqXXcc2yPnq517sXQtNcfZ2BHgnVTcbhSYxko7", // CID
@@ -125,7 +130,7 @@ async function bootup() {
 
 export function Navigator() {
   const { url, setUrl } = useBrowserState();
-  const { isLoggedIn } = useLume();
+  const { isLoggedIn } = useAuth();
   const inputRef = createRef<HTMLInputElement>();
 
   const browse = () => {
@@ -167,10 +172,11 @@ export function Navigator() {
 
 export function Browser() {
   const { url } = useBrowserState();
-  const lume = useLume();
+  const status = useLumeStatus();
+  const auth = useAuth();
 
   useEffect(() => {
-    boot(lume);
+    boot(status, auth);
   }, []);
 
   return <iframe src={url} className="w-full h-full"></iframe>;
