@@ -2,6 +2,7 @@ import {
   createContext,
   createRef,
   forwardRef,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -133,7 +134,7 @@ export function Navigator() {
   const { isLoggedIn } = useAuth();
   const inputRef = createRef<HTMLInputElement>();
 
-  const browse = () => {
+  const browse = useCallback(() => {
     let input = inputRef.current?.value.trim();
 
     // If the input doesn't contain a protocol, assume it's http
@@ -153,7 +154,7 @@ export function Navigator() {
       // Handle invalid URLs here, if needed
       console.error("Invalid URL:", e);
     }
-  };
+  }, [inputRef, setUrl]);
 
   const NavInput = forwardRef((props: any, ref) => (
     <Input ref={ref} {...props}></Input>
