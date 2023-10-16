@@ -146,10 +146,7 @@ export function Navigator() {
       // Try to parse it as a URL
       const url = new URL(input);
 
-      setUrl(
-        `${url.hostname}${url.pathname}${url.search}${url.hash}` ||
-          "about:blank",
-      );
+      setUrl(url.toString() || "about:blank");
     } catch (e) {
       // Handle invalid URLs here, if needed
       console.error("Invalid URL:", e);
