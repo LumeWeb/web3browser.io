@@ -160,9 +160,10 @@ export function Navigator() {
     setInputValue(contextUrl); // Update local state when context's url changes
   }, [contextUrl]);
 
-  const NavInput = forwardRef((props: any, ref) => (
-    <Input ref={ref} {...props}></Input>
-  ));
+  const NavInput = forwardRef((props: any, ref) => {
+    debugger;
+    return <Input ref={ref} {...props}></Input>;
+  });
 
   console.log("Navigator mounted");
 
