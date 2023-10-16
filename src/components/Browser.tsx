@@ -159,6 +159,8 @@ export function Navigator() {
     <Input ref={ref} {...props}></Input>
   ));
 
+  console.log("Navigator mounted");
+
   return (
     <>
       <NavInput ref={inputRef} disabled={!isLoggedIn} />
