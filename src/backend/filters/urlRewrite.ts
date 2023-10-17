@@ -2,6 +2,7 @@ import type { ContentFilter } from "../types.js";
 import { getTld } from "@lumeweb/libresolver";
 import tldEnum from "@lumeweb/tld-enum";
 import * as cheerio from "cheerio";
+import urlJoin from "proper-url-join";
 
 export default class URLRewriteFilter implements ContentFilter {
   async process(response: Response, mimeType: string): Promise<Response> {
@@ -20,8 +21,17 @@ export default class URLRewriteFilter implements ContentFilter {
           let attrName = ["a", "link"].includes(tag) ? "href" : "src";
           let urlValue = $(element).attr(attrName);
           if (urlValue) {
-            if (!urlValue.startsWith("http") || !isICANN(urlValue)) {
-              $(element).attr(attrName, `/browse${urlValue}`);
+            const isExternal = urlValue.startsWith("http");
+            if (!isExternal || !isICANN(urlValue)) {
+              if (!isExternal) {
+                urlValue = urlJoin("/browse/", urlValue);
+              } else {
+                urlValue = `/browse/${urlValue}`;
+              }
+
+              console.log(urlValue);
+
+              $(element).attr(attrName, urlValue);
             }
           }
         });
