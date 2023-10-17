@@ -11,10 +11,17 @@ import "@/styles/globals.scss";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
+    <style>
+      main astro-island {
+        display: flex;
+        flex-direction: column;
+        height: 89vh;
+      }
+    </style>
   </head>
   <body>
     <main>
-      <App client:only="react" class="w-full h-full" />
+      <App client:only="react" />
     </main>
   </body>
 </html>
