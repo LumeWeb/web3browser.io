@@ -26,6 +26,9 @@ export default class URLRewriteFilter implements ContentFilter {
                 urlValue.startsWith("../") ||
                 urlValue.startsWith("http")
               ) {
+                if (!urlValue.startsWith("/")) {
+                  urlValue = `/${urlValue}`;
+                }
                 $(element).attr(attrName, `/browse${urlValue}`);
               }
             }
