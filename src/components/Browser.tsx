@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import {
@@ -179,16 +180,31 @@ export function Navigator() {
 }
 
 export function Browser() {
-  const { url } = useBrowserState();
+  const { url, setUrl } = useBrowserState();
   const status = useLumeStatus();
   const auth = useAuth();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     boot(status, auth);
   }, []);
 
+  const handleIframeLoad = () => {
+    try {
+      const newUrl = iframeRef?.current?.contentWindow?.location.href as string;
+      setUrl(newUrl);
+    } catch (e) {
+      // This will catch errors related to cross-origin requests, in which case we can't access the iframe's contentWindow.location
+      console.warn(
+        "Couldn't access iframe URL due to cross-origin restrictions:",
+        e,
+      );
+    }
+  };
+
   return (
     <iframe
+      onLoad={handleIframeLoad}
       src={url ? `/browse/${url}` : "about:blank"}
       className="w-full h-full"
     ></iframe>
