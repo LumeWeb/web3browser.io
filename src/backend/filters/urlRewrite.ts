@@ -18,7 +18,6 @@ export default class URLRewriteFilter implements ContentFilter {
         .each((index, element) => {
           let attrName = ["a", "link"].includes(tag) ? "href" : "src";
           let urlValue = $(element).attr(attrName);
-
           if (urlValue) {
             if (!isICANN(urlValue)) {
               if (
@@ -26,9 +25,11 @@ export default class URLRewriteFilter implements ContentFilter {
                 urlValue.startsWith("../") ||
                 urlValue.startsWith("http")
               ) {
+                console.log("before", urlValue);
                 if (!urlValue.startsWith("/")) {
                   urlValue = `/${urlValue}`;
                 }
+                console.log("after", urlValue);
                 $(element).attr(attrName, `/browse${urlValue}`);
               }
             }
