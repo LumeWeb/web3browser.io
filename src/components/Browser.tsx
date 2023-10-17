@@ -192,7 +192,9 @@ export function Browser() {
   const handleIframeLoad = () => {
     try {
       const newUrl = iframeRef?.current?.contentWindow?.location.href as string;
-      setUrl(newUrl);
+      if (url !== newUrl) {
+        setUrl(newUrl);
+      }
     } catch (e) {
       // This will catch errors related to cross-origin requests, in which case we can't access the iframe's contentWindow.location
       console.warn(
