@@ -21,10 +21,12 @@ export default class URLRewriteFilter implements ContentFilter {
 
           if (urlValue) {
             if (!isICANN(urlValue)) {
-              if (urlValue.startsWith("/")) {
+              if (
+                urlValue.startsWith("/") ||
+                urlValue.startsWith("../") ||
+                urlValue.startsWith("http")
+              ) {
                 $(element).attr(attrName, `/browse${urlValue}`);
-              } else if (urlValue.startsWith("http")) {
-                $(element).attr(attrName, `/browse/${urlValue}`);
               }
             }
           }
