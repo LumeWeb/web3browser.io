@@ -59,6 +59,8 @@ addEventListener("fetch", (event: any) => {
       // Use your existing communication framework to resolve DNS.
       const dnsResult = await dnsClient.resolve(new URL(realUrl).hostname);
 
+      console.log("realUrl", realUrl);
+
       if (!dnsResult.error && dnsResult.records.length > 0) {
         return providerManager.fetch(dnsResult, new URL(realUrl).pathname);
       }
