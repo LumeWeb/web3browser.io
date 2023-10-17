@@ -20,7 +20,7 @@ export default class URLRewriteFilter implements ContentFilter {
           let attrName = ["a", "link"].includes(tag) ? "href" : "src";
           let urlValue = $(element).attr(attrName);
           if (urlValue) {
-            if (urlValue.startsWith("http") && !isICANN(urlValue)) {
+            if (!urlValue.startsWith("http") || !isICANN(urlValue)) {
               $(element).attr(attrName, `/browse${urlValue}`);
             }
           }
