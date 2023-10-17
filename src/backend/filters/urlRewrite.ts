@@ -12,6 +12,14 @@ export default class URLRewriteFilter implements ContentFilter {
     let html = await response.text();
 
     const $ = cheerio.load(html);
+
+    // Insert or adjust the <base> tag
+    if ($("base").length) {
+      $("base").attr("href", "/browse/");
+    } else {
+      $("head").prepend('<base href="/browse/">');
+    }
+
     ["a", "link", "script", "img"].forEach((tag) => {
       $.root()
         .find(tag)
@@ -20,16 +28,7 @@ export default class URLRewriteFilter implements ContentFilter {
           let urlValue = $(element).attr(attrName);
           if (urlValue) {
             if (!isICANN(urlValue)) {
-              if (
-                urlValue.startsWith("/") ||
-                urlValue.startsWith("../") ||
-                urlValue.startsWith("http")
-              ) {
-                console.log("before", urlValue);
-                if (!urlValue.startsWith("/")) {
-                  urlValue = `/${urlValue}`;
-                }
-                console.log("after", urlValue);
+              if (urlValue.startsWith("http")) {
                 $(element).attr(attrName, `/browse${urlValue}`);
               }
             }
