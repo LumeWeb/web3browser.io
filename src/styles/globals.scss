@@ -74,3 +74,9 @@
         @apply bg-background text-foreground;
     }
 }
+
+main astro-island {
+    display: flex;
+    flex-direction: column;
+    height: 89vh;
+}
