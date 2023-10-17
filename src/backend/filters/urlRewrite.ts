@@ -27,6 +27,8 @@ export default class URLRewriteFilter implements ContentFilter {
         });
     });
 
+    console.log("URLRewriteFilter result", $.html());
+
     return new Response($.html(), {
       headers: response.headers,
     });
