@@ -20,6 +20,7 @@ export default class IPFSProvider implements ContentProvider {
     let urlPath = path;
     const parsedPath = nodePath.parse(urlPath);
     let err;
+    console.log("ipfs fetching", uri, path);
     try {
       if (ipnsPath(cid)) {
         const cidHash = cid.replace("/ipns/", "");
