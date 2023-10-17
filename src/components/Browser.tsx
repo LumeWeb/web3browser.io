@@ -206,6 +206,7 @@ export function Browser() {
 
   return (
     <iframe
+      ref={iframeRef}
       onLoad={handleIframeLoad}
       src={url ? `/browse/${url}` : "about:blank"}
       className="w-full h-full"
