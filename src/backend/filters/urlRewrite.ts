@@ -30,6 +30,7 @@ export default class URLRewriteFilter implements ContentFilter {
             const isExternal = urlValue.startsWith("http");
             if (!isExternal || !isICANN(urlValue)) {
               if (!isExternal) {
+                //@ts-ignore
                 urlValue = urlJoin(requestor, urlValue);
               }
               urlValue = `${swUrl.protocol}://${swUrl.hostname}/browse/${urlValue}`;
