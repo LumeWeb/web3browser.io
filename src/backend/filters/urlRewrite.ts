@@ -34,6 +34,9 @@ export default class URLRewriteFilter implements ContentFilter {
                 urlValue = urlJoin(requestor, urlValue);
               }
               urlValue = `${swUrl.protocol}://${swUrl.hostname}/browse/${urlValue}`;
+              console.log(urlValue);
+
+              $(element).attr(attrName, urlValue);
             }
           }
         });
