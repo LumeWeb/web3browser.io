@@ -102,7 +102,6 @@ async function boot(status: LumeStatusContextType, auth: AuthContextType) {
   BOOT_FUNCTIONS.push(async () => await handshakeClient.register());
   BOOT_FUNCTIONS.push(async () => await ethClient.register());
   BOOT_FUNCTIONS.push(async () => await ipfsClient.register());
-  BOOT_FUNCTIONS.push(async () => status.setReady(true));
 
   const resolvers = [
     "zrjCnUBqmBqXXcc2yPnq517sXQtNcfZ2BHgnVTcbhSYxko7", // CID
@@ -113,6 +112,7 @@ async function boot(status: LumeStatusContextType, auth: AuthContextType) {
   for (const resolver of resolvers) {
     BOOT_FUNCTIONS.push(async () => dnsClient.registerResolver(resolver));
   }
+  BOOT_FUNCTIONS.push(async () => status.setReady(true));
 
   await bootup();
 
@@ -132,8 +132,8 @@ async function bootup() {
 
 export function Navigator() {
   const { url: contextUrl, setUrl } = useBrowserState();
-  const { isLoggedIn } = useAuth();
   const [inputValue, setInputValue] = useState(contextUrl); // Local state for the input value
+  const { ready } = useLumeStatus();
 
   const browse = () => {
     let input = inputValue.trim();
@@ -169,9 +169,9 @@ export function Navigator() {
       <NavInput
         value={inputValue}
         onChange={(e: any) => setInputValue(e.target.value)}
-        disabled={!isLoggedIn}
+        disabled={!ready}
       />
-      <Button onClick={browse} disabled={!isLoggedIn}>
+      <Button onClick={browse} disabled={!ready}>
         Navigate
         <Arrow />
       </Button>
