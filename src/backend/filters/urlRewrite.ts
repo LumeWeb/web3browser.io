@@ -56,7 +56,6 @@ export default class URLRewriteFilter implements ContentFilter {
 
 function isICANN(url: string) {
   if (url.startsWith("//")) {
-    debugger;
     url = `https:${url}`;
   }
   try {
