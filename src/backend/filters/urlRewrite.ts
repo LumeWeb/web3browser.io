@@ -20,6 +20,8 @@ export default class URLRewriteFilter implements ContentFilter {
 
     const $ = cheerio.load(html);
 
+    const rUrl = new URL(requestor);
+
     ["a", "link", "script", "img"].forEach((tag) => {
       $.root()
         .find(tag)
@@ -31,9 +33,9 @@ export default class URLRewriteFilter implements ContentFilter {
             if (!isExternal || !isICANN(urlValue)) {
               if (!isExternal) {
                 //@ts-ignore
-                urlValue = path.join(requestor, urlValue);
+                urlValue = path.join(rUrl.pathname, urlValue);
               }
-              urlValue = `${swUrl.protocol}//${swUrl.hostname}/browse/${urlValue}`;
+              urlValue = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${urlValue}`;
               console.log(urlValue);
 
               $(element).attr(attrName, urlValue);
