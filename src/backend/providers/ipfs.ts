@@ -25,7 +25,7 @@ export default class IPFSProvider implements ContentProvider {
       if (ipnsPath(cid)) {
         const cidHash = cid.replace("/ipns/", "");
         cid = await this._client.ipns(cidHash);
-        cid = `/ipfs/${cid}`;
+        //  cid = `/ipfs/${cid}`;
       }
 
       if (ipfsPath(cid)) {
