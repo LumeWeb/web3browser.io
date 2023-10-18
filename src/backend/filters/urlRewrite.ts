@@ -2,7 +2,7 @@ import type { ContentFilter } from "../types.js";
 import { getTld } from "@lumeweb/libresolver";
 import tldEnum from "@lumeweb/tld-enum";
 import * as cheerio from "cheerio";
-import urlJoin from "proper-url-join";
+import path from "path";
 
 const swUrl = new URL(self.location.origin);
 
@@ -31,7 +31,7 @@ export default class URLRewriteFilter implements ContentFilter {
             if (!isExternal || !isICANN(urlValue)) {
               if (!isExternal) {
                 //@ts-ignore
-                urlValue = urlJoin(requestor, urlValue);
+                urlValue = path.join(requestor, urlValue);
               }
               urlValue = `${swUrl.protocol}://${swUrl.hostname}/browse/${urlValue}`;
               console.log(urlValue);
