@@ -24,16 +24,7 @@ export default class IPFSProvider implements ContentProvider {
     try {
       if (ipnsPath(cid)) {
         const cidHash = cid.replace("/ipns/", "");
-        // Use sogola.eth as a test, bypass lookup.
-        if (
-          cidHash ===
-          "k51qzi5uqu5dhxd50115dn1hfvuwiqwej3dki72uyopetqua71i6lp96pem0a6"
-        ) {
-          cid = "QmbavvC59N5u93LqPR5Kz74wdUY3FWnDv38SvhTx4oQope";
-        } else {
-          cid = await this._client.ipns(cidHash);
-        }
-
+        cid = await this._client.ipns(cidHash);
         cid = `/ipfs/${cid}`;
       }
 
