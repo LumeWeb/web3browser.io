@@ -43,6 +43,20 @@ export default class URLRewriteFilter implements ContentFilter {
               $(element).attr(attrName, urlValue);
             }
           }
+
+          if (tag === "img" && $(element).attr("srcset")) {
+            let srcsetValue = $(element).attr("srcset");
+            let srcsetValues = srcsetValue?.split(",");
+            let rewrittenSrcsetValues = srcsetValues?.map((srcsetEntry) => {
+              let [url, descriptor] = srcsetEntry.trim().split(" ");
+              if (!url.startsWith("http") && !url.startsWith("//")) {
+                url = path.join(rUrl.pathname, url);
+                url = `${rUrl.protocol}//${rUrl.hostname}/browse/${rUrl.hostname}${url}`;
+              }
+              return `${url} ${descriptor}`;
+            });
+            $(element).attr("srcset", rewrittenSrcsetValues?.join(", "));
+          }
         });
     });
 
