@@ -8,5 +8,9 @@ export interface ContentProvider {
 }
 
 export interface ContentFilter {
-  process: (response: Response, mineType: string) => Promise<Response>;
+  process: (
+    response: Response,
+    mineType: string,
+    requestor: string,
+  ) => Promise<Response>;
 }

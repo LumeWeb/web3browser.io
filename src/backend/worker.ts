@@ -62,7 +62,11 @@ addEventListener("fetch", (event: any) => {
       console.log("realUrl", realUrl);
 
       if (!dnsResult.error && dnsResult.records.length > 0) {
-        return providerManager.fetch(dnsResult, new URL(realUrl).pathname);
+        return providerManager.fetch(
+          realUrl,
+          dnsResult,
+          new URL(realUrl).pathname,
+        );
       }
 
       return new Response("Sorry, that is not a valid web3 website.");

@@ -4,8 +4,14 @@ import tldEnum from "@lumeweb/tld-enum";
 import * as cheerio from "cheerio";
 import urlJoin from "proper-url-join";
 
+const swUrl = new URL(self.location.origin);
+
 export default class URLRewriteFilter implements ContentFilter {
-  async process(response: Response, mimeType: string): Promise<Response> {
+  async process(
+    response: Response,
+    mimeType: string,
+    requestor: string,
+  ): Promise<Response> {
     if (mimeType !== "text/html") {
       return response;
     }
@@ -24,15 +30,9 @@ export default class URLRewriteFilter implements ContentFilter {
             const isExternal = urlValue.startsWith("http");
             if (!isExternal || !isICANN(urlValue)) {
               if (!isExternal) {
-                //@ts-ignore
-                urlValue = urlJoin("/browse/", urlValue);
-              } else {
-                urlValue = `/browse/${urlValue}`;
+                urlValue = urlJoin(requestor, urlValue);
               }
-
-              console.log(urlValue);
-
-              $(element).attr(attrName, urlValue);
+              urlValue = `${swUrl.protocol}://${swUrl.hostname}/browse/${urlValue}`;
             }
           }
         });

@@ -15,7 +15,11 @@ export class ProviderManager {
     this.providers.push(provider);
   }
 
-  async fetch(dnsResult: DNSResult, path: string): Promise<Response> {
+  async fetch(
+    url: string,
+    dnsResult: DNSResult,
+    path: string,
+  ): Promise<Response> {
     for (const record of dnsResult.records) {
       for (const provider of this.providers) {
         if (provider.supports(record.value)) {
@@ -25,6 +29,7 @@ export class ProviderManager {
             return this._processor.process(
               content,
               content.headers.get("Content-Type")!,
+              url,
             );
           }
 

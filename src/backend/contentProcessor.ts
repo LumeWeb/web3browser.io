@@ -7,11 +7,19 @@ export class ContentProcessor {
     this.filters.push(filter);
   }
 
-  async process(response: Response, mimeType: string): Promise<Response> {
+  async process(
+    response: Response,
+    mimeType: string,
+    requestor: string,
+  ): Promise<Response> {
     let processedResponse = response;
 
     for (const filter of this.filters) {
-      processedResponse = await filter.process(processedResponse, mimeType);
+      processedResponse = await filter.process(
+        processedResponse,
+        mimeType,
+        requestor,
+      );
     }
 
     return processedResponse;
