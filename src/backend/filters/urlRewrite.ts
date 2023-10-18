@@ -29,7 +29,9 @@ export default class URLRewriteFilter implements ContentFilter {
           let attrName = ["a", "link"].includes(tag) ? "href" : "src";
           let urlValue = $(element).attr(attrName);
           if (urlValue) {
-            const isExternal = urlValue.startsWith("http");
+            const isExternal =
+              urlValue.startsWith("http") ||
+              (urlValue.startsWith("//") && isICANN(urlValue));
             if (!isExternal || !isICANN(urlValue)) {
               if (!isExternal) {
                 //@ts-ignore
