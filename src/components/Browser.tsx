@@ -135,12 +135,16 @@ async function bootup() {
   }
 }
 
+const NavInput = forwardRef<HTMLInputElement>((props: React.HTMLProps<HTMLInputElement>, ref) => {
+  return <Input ref={ref} {...props}></Input>;
+});
+
 export function Navigator() {
   const { url: contextUrl, setUrl } = useBrowserState();
-  const [inputValue, setInputValue] = useState(contextUrl); // Local state for the input value
   const { ready } = useLumeStatus();
+  const inputEl = useRef<HTMLInputElement>();
 
-  const browse = () => {
+  const browse = (inputValue: string) => {
     let input = inputValue.trim();
 
     // If the input doesn't contain a protocol, assume it's http
@@ -160,27 +164,33 @@ export function Navigator() {
   };
 
   useEffect(() => {
-    setInputValue(contextUrl); // Update local state when context's url changes
+    if(inputEl.current) {
+      inputEl.current.value = contextUrl;
+    }
   }, [contextUrl]);
-
-  const NavInput = forwardRef((props: any, ref) => {
-    return <Input ref={ref} {...props}></Input>;
-  });
 
   console.log("Navigator mounted");
 
   return (
-    <>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      const inputElement = e.target as HTMLFormElement;
+      const inputValue = inputElement?.elements.namedItem('url')?.value;
+      if (inputValue) {
+        browse(inputValue)
+      }
+    }} className="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [>input:focus]:ring-2 [>input:focus]:ring-white">
       <NavInput
-        value={inputValue}
-        onChange={(e: any) => setInputValue(e.target.value)}
+        ref={inputEl}
         disabled={!ready}
+        className="rounded-l-full border-none"
+        name="url"
       />
-      <Button onClick={browse} disabled={!ready}>
+      <Button disabled={!ready} className="rounded-r-full">
         Navigate
         <Arrow />
       </Button>
-    </>
+    </form>
   );
 }
 
