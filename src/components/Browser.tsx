@@ -183,7 +183,7 @@ export function Navigator() {
       <NavInput
         ref={inputEl}
         disabled={!ready}
-        className="rounded-l-full border-none ring-primary"
+        className="rounded-l-full border-none focus-visible:ring-primary focus-visible:ring-offset-0"
         name="url"
       />
       <Button disabled={!ready} className="rounded-r-full">
