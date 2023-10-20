@@ -179,14 +179,14 @@ export function Navigator() {
       if (inputValue) {
         browse(inputValue)
       }
-    }} className="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [>input:focus]:ring-2 [>input:focus]:ring-white">
+    }} className="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [&>input:focus]:ring-2 [&>input:focus]:ring-primary [&>input:focus+button]:ring-2 [&>input:focus+button]:ring-primary">
       <NavInput
         ref={inputEl}
         disabled={!ready}
-        className="rounded-l-full border-none focus-visible:ring-primary focus-visible:ring-offset-0"
+        className="rounded-l-full border-none focus-visible:ring-offset-0"
         name="url"
       />
-      <Button disabled={!ready} className="rounded-r-full">
+      <Button disabled={!ready} className="rounded-r-full focus-visible:ring-offset-0">
         Navigate
         <Arrow />
       </Button>
