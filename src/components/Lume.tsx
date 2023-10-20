@@ -6,7 +6,7 @@ import {
   useLumeStatus,
 } from "@lumeweb/sdk";
 
-export default function () {
+const Lume: React.FC = () =>  {
   const { isLoggedIn } = useAuth();
   const { ready, inited } = useLumeStatus();
 
@@ -30,3 +30,5 @@ export default function () {
     </>
   );
 }
+
+export default Lume;

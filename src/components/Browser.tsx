@@ -65,19 +65,24 @@ export function useBrowserState() {
   return context;
 }
 
-async function boot(status: LumeStatusContextType, auth: AuthContextType) {
+async function boot({
+  onInit,
+  onAuth,
+  onBoot,
+}: {onInit: (inited: boolean) => Promise<void> | void, onAuth: (authed: boolean) => Promise<void> | void, onBoot: (booted: boolean) => Promise<void> | void}) {
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
 
   await kernel.serviceWorkerReady();
 
-  kernel.init().then(() => {
-    status.setInited(true);
+  await kernel.init().catch((err) => {
+    console.error("[Browser.tsx] Failed to init kernel", {error: err});
   });
-
-  await kernelLoaded();
-
-  auth.setIsLoggedIn(true);
+  await onInit(true);
+  await kernelLoaded().catch((err) => {
+    console.error("[Browser.tsx] Failed to load kernel", {error: err});
+  });
+  await onAuth(true);
 
   BOOT_FUNCTIONS.push(
     async () =>
@@ -112,7 +117,7 @@ async function boot(status: LumeStatusContextType, auth: AuthContextType) {
   for (const resolver of resolvers) {
     BOOT_FUNCTIONS.push(async () => dnsClient.registerResolver(resolver));
   }
-  BOOT_FUNCTIONS.push(async () => status.setReady(true));
+  BOOT_FUNCTIONS.push(async () => onBoot(true));
 
   await bootup();
 
@@ -186,7 +191,17 @@ export function Browser() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    boot(status, auth);
+    boot({
+      onAuth(authed) {
+        auth.setIsLoggedIn(authed)
+      },
+      onBoot(booted) {
+        status.setReady(booted)
+      },
+      onInit(inited) {
+        status.setInited(inited)
+      }
+    }).catch((err) => console.error("[Browser.tsx] Failed to Boot Lume", {error: err}));
   }, []);
 
   const handleIframeLoad = () => {
