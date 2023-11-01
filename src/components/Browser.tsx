@@ -199,7 +199,7 @@ export function Navigator() {
       <NavInput
         ref={(el) => (inputEl.current = el)}
         disabled={!ready}
-        className="rounded-l-full border-none focus-visible:ring-offset-0"
+        className={`rounded-l-full bg-neutral-800 text-white border-none focus-visible:ring-offset-0 ${!ready ? "bg-neutral-950" : ""}`}
         name="url"
       />
       <Button
