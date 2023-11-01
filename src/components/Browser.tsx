@@ -20,7 +20,7 @@ import {
 import * as kernel from "@lumeweb/libkernel/kernel";
 import { kernelLoaded } from "@lumeweb/libkernel/kernel";
 import Arrow from "@/components/Arrow.tsx";
-import type React from "react";
+import React from "react";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -35,6 +35,8 @@ let BOOT_FUNCTIONS: (() => Promise<any>)[] = [];
 interface BrowserContextType {
   url: string;
   setUrl: React.Dispatch<React.SetStateAction<string>>;
+  isLoadingPage: boolean;
+  setIsLoadingPage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const BrowserStateContext = createContext<BrowserContextType | undefined>(
@@ -47,9 +49,12 @@ export function BrowserStateProvider({
   children: React.ReactElement;
 }) {
   const [url, setUrl] = useState("");
+  const [isLoadingPage, setIsLoadingPage] = useState<boolean>(false);
 
   return (
-    <BrowserStateContext.Provider value={{ url, setUrl }}>
+    <BrowserStateContext.Provider
+      value={{ url, setUrl, isLoadingPage, setIsLoadingPage }}
+    >
       {children}
     </BrowserStateContext.Provider>
   );
@@ -69,18 +74,22 @@ async function boot({
   onInit,
   onAuth,
   onBoot,
-}: {onInit: (inited: boolean) => Promise<void> | void, onAuth: (authed: boolean) => Promise<void> | void, onBoot: (booted: boolean) => Promise<void> | void}) {
+}: {
+  onInit: (inited: boolean) => Promise<void> | void;
+  onAuth: (authed: boolean) => Promise<void> | void;
+  onBoot: (booted: boolean) => Promise<void> | void;
+}) {
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
 
   await kernel.serviceWorkerReady();
 
   await kernel.init().catch((err) => {
-    console.error("[Browser.tsx] Failed to init kernel", {error: err});
+    console.error("[Browser.tsx] Failed to init kernel", { error: err });
   });
   await onInit(true);
   await kernelLoaded().catch((err) => {
-    console.error("[Browser.tsx] Failed to load kernel", {error: err});
+    console.error("[Browser.tsx] Failed to load kernel", { error: err });
   });
   await onAuth(true);
 
@@ -135,14 +144,16 @@ async function bootup() {
   }
 }
 
-const NavInput = forwardRef<HTMLInputElement>((props: React.HTMLProps<HTMLInputElement>, ref) => {
-  return <Input ref={ref} {...props}></Input>;
-});
+const NavInput = forwardRef<HTMLInputElement>(
+  (props: React.InputHTMLAttributes<HTMLInputElement>, ref) => {
+    return <Input ref={ref} {...props} />;
+  },
+);
 
 export function Navigator() {
   const { url: contextUrl, setUrl } = useBrowserState();
   const { ready } = useLumeStatus();
-  const inputEl = useRef<HTMLInputElement>();
+  const inputEl = useRef<HTMLInputElement | null>();
 
   const browse = (inputValue: string) => {
     let input = inputValue.trim();
@@ -164,7 +175,7 @@ export function Navigator() {
   };
 
   useEffect(() => {
-    if(inputEl.current) {
+    if (inputEl.current) {
       inputEl.current.value = contextUrl;
     }
   }, [contextUrl]);
@@ -172,21 +183,29 @@ export function Navigator() {
   console.log("Navigator mounted");
 
   return (
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      const inputElement = e.target as HTMLFormElement;
-      const inputValue = inputElement?.elements.namedItem('url')?.value;
-      if (inputValue) {
-        browse(inputValue)
-      }
-    }} className="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [&>input:focus]:ring-2 [&>input:focus]:ring-primary [&>input:focus+button]:ring-2 [&>input:focus+button]:ring-primary">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const inputElement = e.target as HTMLFormElement;
+        const inputValue = (
+          inputElement?.elements.namedItem("url") as HTMLInputElement
+        )?.value;
+        if (inputValue) {
+          browse(inputValue);
+        }
+      }}
+      className="relative h-full w-full rounded-full bg-neutral-800 border border-neutral-700 flex items-center [&>input:focus]:ring-2 [&>input:focus]:ring-primary [&>input:focus+button]:ring-2 [&>input:focus+button]:ring-primary"
+    >
       <NavInput
-        ref={inputEl}
+        ref={(el) => (inputEl.current = el)}
         disabled={!ready}
         className="rounded-l-full border-none focus-visible:ring-offset-0"
         name="url"
       />
-      <Button disabled={!ready} className="rounded-r-full focus-visible:ring-offset-0">
+      <Button
+        disabled={!ready}
+        className="rounded-r-full focus-visible:ring-offset-0"
+      >
         Navigate
         <Arrow />
       </Button>
@@ -195,7 +214,7 @@ export function Navigator() {
 }
 
 export function Browser() {
-  const { url, setUrl } = useBrowserState();
+  const { url, setUrl, isLoadingPage, setIsLoadingPage } = useBrowserState();
   const status = useLumeStatus();
   const auth = useAuth();
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -203,15 +222,17 @@ export function Browser() {
   useEffect(() => {
     boot({
       onAuth(authed) {
-        auth.setIsLoggedIn(authed)
+        auth.setIsLoggedIn(authed);
       },
       onBoot(booted) {
-        status.setReady(booted)
+        status.setReady(booted);
       },
       onInit(inited) {
-        status.setInited(inited)
-      }
-    }).catch((err) => console.error("[Browser.tsx] Failed to Boot Lume", {error: err}));
+        status.setInited(inited);
+      },
+    }).catch((err) =>
+      console.error("[Browser.tsx] Failed to Boot Lume", { error: err }),
+    );
   }, []);
 
   const handleIframeLoad = () => {
@@ -223,6 +244,7 @@ export function Browser() {
         .replace(/\/$/, "");
       if (url !== realUrl) {
         setUrl(realUrl);
+        setIsLoadingPage(false);
       }
     } catch (e) {
       // This will catch errors related to cross-origin requests, in which case we can't access the iframe's contentWindow.location
@@ -233,12 +255,40 @@ export function Browser() {
     }
   };
 
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (iframe) {
+      const observer = new MutationObserver((mutationsList, observer) => {
+        for (let mutation of mutationsList) {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "src"
+          ) {
+            setIsLoadingPage(true);
+          }
+        }
+      });
+
+      observer.observe(iframe, { attributes: true });
+      return () => observer.disconnect(); // Clean up on unmount
+    }
+  }, []);
+
   return (
-    <iframe
-      ref={iframeRef}
-      onLoad={handleIframeLoad}
-      src={url ? `/browse/${url}` : "about:blank"}
-      className="w-full h-full"
-    ></iframe>
+    <>
+      {isLoadingPage ? (
+        <div className="fixed bottom-2 left-3">
+          <span className="max-w-4xl w-full block my-2 py-1 px-4 rounded-lg opacity-80 bg-gray-900/70 border border-gray-600 text-gray-400">
+            Loading {url}...
+          </span>
+        </div>
+      ) : null}
+      <iframe
+        ref={iframeRef}
+        onLoad={handleIframeLoad}
+        src={url ? `/browse/${url}` : "about:blank"}
+        className="w-full h-full"
+      ></iframe>
+    </>
   );
 }

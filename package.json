@@ -3,12 +3,13 @@
     "type": "module",
     "version": "0.0.1",
     "scripts": {
-        "dev": "astro dev",
+        "dev": "MODE=development astro dev",
         "start": "astro dev",
         "prepare": "presetter bootstrap",
         "build": "run build",
         "preview": "astro preview",
-        "astro": "astro"
+        "astro": "astro",
+        "local-setup-https": "mkdir -p ./.local-ssl && mkcert -key-file ./.local-ssl/localhost-key.pem -cert-file ./.local-ssl/localhost.pem localhost"
     },
     "dependencies": {
         "@astrojs/react": "^3.0.3",
