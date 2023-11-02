@@ -22,8 +22,6 @@ const App: React.FC = () => {
     .filter((n) => n.name.toLowerCase() === "handshake")
     .at(0);
 
-  console.log({ ethStatus, handshakeStatus, networks });
-
   return (
     <header className="relative border rounded-md m-4 border-neutral-800 px-3 py-4 w-[calc(100%-32px)] bg-neutral-900 flex flex-col">
       <div className="relative px-2 my-2 mb-4 pl-2 pb-2 w-full flex justify-between">
@@ -38,15 +36,15 @@ const App: React.FC = () => {
       <Navigator />
       {ethStatus?.syncState === "syncing" ||
       handshakeStatus?.syncState === "syncing" ? (
-        <div className="py-2 flex flex-row">
+        <div className="py-4 -mb-4 flex flex-row gap-x-3">
           {ethStatus?.syncState === "syncing" ? (
-            <span className="rounded-full bg-white text-black p-1">
-              {ethStatus.sync.toPrecision(1)}% Syncing Ethereum Network
+            <span className="rounded-full bg-neutral-800 text-white p-1 px-4">
+              <span className="font-mono mr-2 font-bold">{ethStatus.sync.toFixed(0)}%</span> Syncing Ethereum Network
             </span>
           ) : null}
           {handshakeStatus?.syncState === "syncing" ? (
-            <span className="rounded-full bg-white text-black p-1">
-              {handshakeStatus.sync.toPrecision(1)}% Syncing Handshake Network
+            <span className="rounded-full bg-neutral-800 text-white p-1 px-4">
+              <span className="font-bold font-mono mr-2">{handshakeStatus.sync.toFixed(1)}%</span> Syncing Handshake Network
             </span>
           ) : null}
         </div>

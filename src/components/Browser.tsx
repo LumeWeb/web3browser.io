@@ -180,8 +180,6 @@ export function Navigator() {
     }
   }, [contextUrl]);
 
-  console.log("Navigator mounted");
-
   return (
     <form
       onSubmit={(e) => {
@@ -244,8 +242,8 @@ export function Browser() {
         .replace(/\/$/, "");
       if (url !== realUrl) {
         setUrl(realUrl);
-        setIsLoadingPage(false);
       }
+      setIsLoadingPage(false);
     } catch (e) {
       // This will catch errors related to cross-origin requests, in which case we can't access the iframe's contentWindow.location
       console.warn(
@@ -263,12 +261,12 @@ export function Browser() {
           if (
             mutation.type === "attributes" &&
             mutation.attributeName === "src"
-          ) {
-            setIsLoadingPage(true);
+            ) {
+              setIsLoadingPage(true);
+            }
           }
-        }
-      });
-
+        });
+        
       observer.observe(iframe, { attributes: true });
       return () => observer.disconnect(); // Clean up on unmount
     }
@@ -278,7 +276,7 @@ export function Browser() {
     <>
       {isLoadingPage ? (
         <div className="fixed bottom-2 left-3">
-          <span className="max-w-4xl w-full block my-2 py-1 px-4 rounded-lg opacity-80 bg-gray-900/70 border border-gray-600 text-gray-400">
+          <span className="max-w-4xl w-full block my-2 py-1 px-4 rounded-lg bg-gray-900/70 border border-gray-600 text-gray-400">
             Loading {url}...
           </span>
         </div>
