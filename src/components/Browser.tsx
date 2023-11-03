@@ -311,7 +311,7 @@ export function Browser() {
           ref={iframeRef}
           onLoad={handleIframeLoad}
           src={url ? `/browse/${url}` : "about:blank"}
-          className={`${!shouldRenderStartPage ? "hidden": ""} w-full h-full`}
+          className={`${shouldRenderStartPage ? "hidden": ""} w-full h-full`}
         ></iframe>
     </>
   );

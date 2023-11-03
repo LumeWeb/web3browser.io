@@ -61,7 +61,7 @@ const StartPage = ({ setUrl }: Props) => {
           </ul>
         </div>
       ) : null}
-      {inited && ready ? (
+      {inited && !ready && isLoggedIn  ? (
         <div
           className="bg-yellow-800/40 rounded-md border border-yellow-500 text-yellow-500 p-4"
           role="alert"
