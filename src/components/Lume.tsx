@@ -14,7 +14,7 @@ const Lume: React.FC = () =>  {
     <>
       {!isLoggedIn && (
         <LumeIdentity>
-          <LumeIdentityTrigger asChild disabled={!inited}>
+          <LumeIdentityTrigger asChild>
             {
               <button
                 className="ml-2 w-full rounded-full bg-[hsl(113,49%,55%)] text-black disabled:pointer-events-none disabled:opacity-50"
