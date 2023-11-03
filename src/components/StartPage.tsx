@@ -1,4 +1,4 @@
-import { useLumeStatus } from "@lumeweb/sdk";
+import { useAuth, useLumeStatus } from "@lumeweb/sdk";
 import React from "react";
 
 type Props = {
@@ -14,7 +14,8 @@ const AVAILABLE_PAGES = [
 ];
 
 const StartPage = ({ setUrl }: Props) => {
-  const { ready } = useLumeStatus();
+  const { ready, inited } = useLumeStatus();
+  const { isLoggedIn } = useAuth();
   return (
     <div className="mx-4 relative border rounded-md mt-2 border-neutral-800 p-10 w-[calc(100%-32px)] bg-neutral-900 flex flex-col">
       <h2 className="font-bold text-2xl text-white">
@@ -27,7 +28,7 @@ const StartPage = ({ setUrl }: Props) => {
       </p>
       {/* TODO: Add the lume loading indicators for the networks. */}
       {/* <CircleProgressBar radius={20} strokeWidth={4} textSize={12} percentage={75} /> */}
-      {ready ? (
+      {inited && ready ? (
         <div>
           <hr className="my-3 border-neutral-700" />
           <h3 className="text-white text-lg font-bold mt-4">
@@ -59,7 +60,8 @@ const StartPage = ({ setUrl }: Props) => {
             ))}
           </ul>
         </div>
-      ) : (
+      ) : null}
+      {inited && ready ? (
         <div
           className="bg-yellow-800/40 rounded-md border border-yellow-500 text-yellow-500 p-4"
           role="alert"
@@ -67,7 +69,16 @@ const StartPage = ({ setUrl }: Props) => {
           <p className="font-bold">Be patient</p>
           <p>We are starting the engines.</p>
         </div>
-      )}
+      ): null}
+      {!isLoggedIn ? (
+        <div
+          className="bg-blue-800/40 rounded-md border border-blue-500 text-blue-500 p-4"
+          role="alert"
+        >
+          <p className="font-bold">Attention</p>
+          <p>Please click login to start using the browser.</p>
+        </div>
+      ) : null}
     </div>
   );
 };
