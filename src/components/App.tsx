@@ -36,29 +36,44 @@ const App: React.FC = () => {
         </div>
       </div>
       <Navigator />
-      {true || ethStatus?.syncState === "syncing" ||
+      {true ||
+      ethStatus?.syncState === "syncing" ||
       handshakeStatus?.syncState === "syncing" ? (
         <div className="py-4 -mb-4 flex flex-row gap-x-3">
           {ethStatus?.syncState === "syncing" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.floors(ethStatus.sync)} />
-              <span className="font-bold font-mono text-orange-400 mr-2">{ethStatus.sync.toFixed(1)}%</span> Syncing Ethereum Network
+              <CircleProgressBar
+                radius={5}
+                strokeWidth={3}
+                percentage={Math.floor(ethStatus.sync)}
+              />
+              <span className="font-bold font-mono text-orange-400 mr-2">
+                {ethStatus.sync.toFixed(1)}%
+              </span>{" "}
+              Syncing Ethereum Network
             </span>
           ) : ethStatus?.syncState === "done" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={100} />
-              {" "} Ethereum Synced
+              <CircleProgressBar radius={5} strokeWidth={3} percentage={100} />{" "}
+              Ethereum Synced
             </span>
           ) : null}
           {handshakeStatus?.syncState === "syncing" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.floor(handshakeStatus.sync)} />
-              <span className="font-bold font-mono text-orange-400 mr-2">{handshakeStatus.sync.toFixed(1)}%</span> Syncing Handshake Network
+              <CircleProgressBar
+                radius={5}
+                strokeWidth={3}
+                percentage={Math.floor(handshakeStatus.sync)}
+              />
+              <span className="font-bold font-mono text-orange-400 mr-2">
+                {handshakeStatus.sync.toFixed(1)}%
+              </span>{" "}
+              Syncing Handshake Network
             </span>
           ) : handshakeStatus?.syncState === "done" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={100} />
-              {" "} Handshake Synced
+              <CircleProgressBar radius={5} strokeWidth={3} percentage={100} />{" "}
+              Handshake Synced
             </span>
           ) : null}
         </div>
@@ -67,11 +82,21 @@ const App: React.FC = () => {
   );
 };
 
-const CircleProgressBar = ({ radius, strokeWidth, textSize, percentage } : {radius: number, strokeWidth: number, textSize?: number, percentage: number}) => {
+const CircleProgressBar = ({
+  radius,
+  strokeWidth,
+  textSize,
+  percentage,
+}: {
+  radius: number;
+  strokeWidth: number;
+  textSize?: number;
+  percentage: number;
+}) => {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
-  const color = Math.ceil(percentage) >= 100 ? "green-500" : "orange-400"
-  
+  const color = Math.ceil(percentage) >= 100 ? "green-500" : "orange-400";
+
   return (
     <svg width={radius * 2 + strokeWidth} height={radius * 2 + strokeWidth}>
       <circle
@@ -93,16 +118,18 @@ const CircleProgressBar = ({ radius, strokeWidth, textSize, percentage } : {radi
         strokeDashoffset={offset}
         strokeLinecap="round"
       />
-      {textSize ? <text
-        x="50%"
-        className={`fill-${color}`}
-        y="50%"
-        textAnchor="middle"
-        dy=".3em"
-        fontSize={textSize}
-      >
-        {`${percentage}%`}
-      </text> : null }
+      {textSize ? (
+        <text
+          x="50%"
+          className={`fill-${color}`}
+          y="50%"
+          textAnchor="middle"
+          dy=".3em"
+          fontSize={textSize}
+        >
+          {`${percentage}%`}
+        </text>
+      ) : null}
     </svg>
   );
 };
