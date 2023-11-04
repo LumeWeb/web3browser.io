@@ -79,6 +79,7 @@ async function boot({
   onAuth: (authed: boolean) => Promise<void> | void;
   onBoot: (booted: boolean) => Promise<void> | void;
 }) {
+  let err = false;
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
 
@@ -88,9 +89,21 @@ async function boot({
     console.error("[Browser.tsx] Failed to init kernel", { error: err });
   });
   await onInit(true);
-  await kernelLoaded().catch((err) => {
-    console.error("[Browser.tsx] Failed to load kernel", { error: err });
-  });
+  await kernelLoaded()
+    .then((result) => {
+      if ("indexeddb_error" === (result as string)) {
+        alert(
+          "Error: Please ensure 3rd party cookies are enabled, and any security like brave shield is off, then reload the app",
+        );
+        err = true;
+      }
+    })
+    .catch((err) => {
+      console.error("[Browser.tsx] Failed to load kernel", { error: err });
+    });
+  if (err) {
+    return;
+  }
   await onAuth(true);
 
   BOOT_FUNCTIONS.push(
@@ -197,7 +210,9 @@ export function Navigator() {
       <NavInput
         ref={(el) => (inputEl.current = el)}
         disabled={!ready}
-        className={`rounded-l-full bg-neutral-800 text-white border-none focus-visible:ring-offset-0 ${!ready ? "bg-neutral-950" : ""}`}
+        className={`rounded-l-full bg-neutral-800 text-white border-none focus-visible:ring-offset-0 ${
+          !ready ? "bg-neutral-950" : ""
+        }`}
         name="url"
       />
       <Button
@@ -261,12 +276,12 @@ export function Browser() {
           if (
             mutation.type === "attributes" &&
             mutation.attributeName === "src"
-            ) {
-              setIsLoadingPage(true);
-            }
+          ) {
+            setIsLoadingPage(true);
           }
-        });
-        
+        }
+      });
+
       observer.observe(iframe, { attributes: true });
       return () => observer.disconnect(); // Clean up on unmount
     }
