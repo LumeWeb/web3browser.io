@@ -41,7 +41,7 @@ const App: React.FC = () => {
         <div className="py-4 -mb-4 flex flex-row gap-x-3">
           {ethStatus?.syncState === "syncing" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.ceil(ethStatus.sync)} />
+              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.floors(ethStatus.sync)} />
               <span className="font-bold font-mono text-orange-400 mr-2">{ethStatus.sync.toFixed(1)}%</span> Syncing Ethereum Network
             </span>
           ) : ethStatus?.syncState === "done" ? (
@@ -52,8 +52,8 @@ const App: React.FC = () => {
           ) : null}
           {handshakeStatus?.syncState === "syncing" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.ceil(handshakeStatus.sync)} />
-              <span className="font-bold font-mono text-orange-400 mr-2">{handshakeStatus.sync.toFixed(1)}%</span> Syncing Ethereum Network
+              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.floor(handshakeStatus.sync)} />
+              <span className="font-bold font-mono text-orange-400 mr-2">{handshakeStatus.sync.toFixed(1)}%</span> Syncing Handshake Network
             </span>
           ) : handshakeStatus?.syncState === "done" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
