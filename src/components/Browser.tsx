@@ -29,6 +29,7 @@ import {
   useAuth,
   useLumeStatus,
 } from "@lumeweb/sdk";
+import StartPage from "./StartPage";
 
 let BOOT_FUNCTIONS: (() => Promise<any>)[] = [];
 
@@ -163,22 +164,29 @@ const NavInput = forwardRef<HTMLInputElement>(
   },
 );
 
+function parseUrl(url: string) {
+  let input = url.trim();
+
+  // If the input doesn't contain a protocol, assume it's http
+  if (!input?.match(/^https?:\/\//)) {
+    input = `http://${input}`;
+  }
+
+  return new URL(input);
+}
+
 export function Navigator() {
   const { url: contextUrl, setUrl } = useBrowserState();
   const { ready } = useLumeStatus();
   const inputEl = useRef<HTMLInputElement | null>();
 
   const browse = (inputValue: string) => {
-    let input = inputValue.trim();
-
-    // If the input doesn't contain a protocol, assume it's http
-    if (!input?.match(/^https?:\/\//)) {
-      input = `http://${input}`;
-    }
-
     try {
+      if(inputValue === "") {
+        setUrl("about:blank")
+      }
       // Try to parse it as a URL
-      const url = new URL(input);
+      const url = parseUrl(inputValue);
 
       setUrl(url.toString() || "about:blank");
     } catch (e) {
@@ -248,7 +256,7 @@ export function Browser() {
     );
   }, []);
 
-  const handleIframeLoad = () => {
+  const handleIframeLoad = (event: React.SyntheticEvent<HTMLIFrameElement, Event>) => {
     try {
       const newUrl = iframeRef?.current?.contentWindow?.location.href as string;
       const urlObj = new URL(newUrl);
@@ -258,7 +266,11 @@ export function Browser() {
       if (url !== realUrl) {
         setUrl(realUrl);
       }
-      setIsLoadingPage(false);
+      const readyState = event.currentTarget.contentDocument?.readyState;
+      console.log("[debug]",{readyState});
+      if(readyState === 'interactive') {
+        setIsLoadingPage(false);
+      }
     } catch (e) {
       // This will catch errors related to cross-origin requests, in which case we can't access the iframe's contentWindow.location
       console.warn(
@@ -273,6 +285,7 @@ export function Browser() {
     if (iframe) {
       const observer = new MutationObserver((mutationsList, observer) => {
         for (let mutation of mutationsList) {
+          console.log("[debug] Mutated ", {mutation})
           if (
             mutation.type === "attributes" &&
             mutation.attributeName === "src"
@@ -287,6 +300,8 @@ export function Browser() {
     }
   }, []);
 
+  const shouldRenderStartPage = !url || url === "about:blank";
+
   return (
     <>
       {isLoadingPage ? (
@@ -296,12 +311,21 @@ export function Browser() {
           </span>
         </div>
       ) : null}
-      <iframe
-        ref={iframeRef}
-        onLoad={handleIframeLoad}
-        src={url ? `/browse/${url}` : "about:blank"}
-        className="w-full h-full"
-      ></iframe>
+      {shouldRenderStartPage ? (
+        <StartPage
+          setUrl={(url) => {
+            const _url = parseUrl(url);
+            setUrl(_url.toString() || "about:blank");
+          }}
+        />
+      ) : null} 
+
+        <iframe
+          ref={iframeRef}
+          onLoad={handleIframeLoad}
+          src={url ? `/browse/${url}` : "about:blank"}
+          className={`${shouldRenderStartPage ? "hidden": ""} w-full h-full`}
+        ></iframe>
     </>
   );
 }
