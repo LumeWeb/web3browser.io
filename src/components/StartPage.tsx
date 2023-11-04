@@ -61,7 +61,7 @@ const StartPage = ({ setUrl }: Props) => {
           </ul>
         </div>
       ) : null}
-      {inited && !ready && isLoggedIn  ? (
+      {inited && !ready && isLoggedIn ? (
         <div
           className="bg-yellow-800/40 rounded-md border border-yellow-500 text-yellow-500 p-4"
           role="alert"
@@ -69,7 +69,7 @@ const StartPage = ({ setUrl }: Props) => {
           <p className="font-bold">Be patient</p>
           <p>We are starting the engines.</p>
         </div>
-      ): null}
+      ) : null}
       {!isLoggedIn ? (
         <div
           className="bg-blue-800/40 rounded-md border border-blue-500 text-blue-500 p-4"
@@ -79,6 +79,19 @@ const StartPage = ({ setUrl }: Props) => {
           <p>Please click login to start using the browser.</p>
         </div>
       ) : null}
+      <p className="text-white text-sm p-5 text-center">
+        Brought to you with 💚 by the &nbsp;
+        <a href="https://lumeweb.com" className="text-zinc-500 underline">
+          Lume
+        </a>
+        &nbsp; team, and grant sponsored by the &nbsp;
+        <a
+          href="https://sia.tech/about-sia-foundation"
+          className="text-zinc-500 underline"
+        >
+          Sia Foundation
+        </a>
+      </p>
     </div>
   );
 };
