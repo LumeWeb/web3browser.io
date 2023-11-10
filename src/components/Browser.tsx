@@ -38,6 +38,8 @@ interface BrowserContextType {
   setUrl: React.Dispatch<React.SetStateAction<string>>;
   isLoadingPage: boolean;
   setIsLoadingPage: React.Dispatch<React.SetStateAction<boolean>>;
+  authStatus: LumeAuthStatus;
+  setAuthStatus: React.Dispatch<React.SetStateAction<LumeAuthStatus>>;
 }
 
 const BrowserStateContext = createContext<BrowserContextType | undefined>(
@@ -51,10 +53,18 @@ export function BrowserStateProvider({
 }) {
   const [url, setUrl] = useState("");
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(false);
+  const [authStatus, setAuthStatus] = useState<LumeAuthStatus>("idle");
 
   return (
     <BrowserStateContext.Provider
-      value={{ url, setUrl, isLoadingPage, setIsLoadingPage }}
+      value={{
+        url,
+        setUrl,
+        isLoadingPage,
+        setIsLoadingPage,
+        authStatus,
+        setAuthStatus,
+      }}
     >
       {children}
     </BrowserStateContext.Provider>
@@ -71,15 +81,18 @@ export function useBrowserState() {
   return context;
 }
 
+type LumeAuthStatus = "idle" | "done" | "syncing";
+
 async function boot({
   onInit,
   onAuth,
   onBoot,
 }: {
   onInit: (inited: boolean) => Promise<void> | void;
-  onAuth: (authed: boolean) => Promise<void> | void;
+  onAuth: (authed: LumeAuthStatus) => Promise<void> | void;
   onBoot: (booted: boolean) => Promise<void> | void;
 }) {
+  await onAuth("idle");
   let err = false;
   const reg = await navigator.serviceWorker.register("/sw.js");
   await reg.update();
@@ -91,7 +104,8 @@ async function boot({
   });
   await onInit(true);
   await kernelLoaded()
-    .then((result) => {
+  .then(async (result) => {
+      await onAuth("syncing");
       if ("indexeddb_error" === (result as string)) {
         alert(
           "Error: Please ensure 3rd party cookies are enabled, and any security like brave shield is off, then reload the app",
@@ -105,7 +119,7 @@ async function boot({
   if (err) {
     return;
   }
-  await onAuth(true);
+  await onAuth("done");
 
   BOOT_FUNCTIONS.push(
     async () =>
@@ -140,9 +154,10 @@ async function boot({
   for (const resolver of resolvers) {
     BOOT_FUNCTIONS.push(async () => dnsClient.registerResolver(resolver));
   }
-  BOOT_FUNCTIONS.push(async () => onBoot(true));
 
   await bootup();
+
+  await onBoot(true);
 
   await Promise.all([
     ethClient.ready(),
@@ -152,7 +167,7 @@ async function boot({
 }
 
 async function bootup() {
-  for (const entry of Object.entries(BOOT_FUNCTIONS)) {
+  for await (const entry of Object.entries(BOOT_FUNCTIONS)) {
     console.log(entry[1].toString());
     await entry[1]();
   }
@@ -182,8 +197,8 @@ export function Navigator() {
 
   const browse = (inputValue: string) => {
     try {
-      if(inputValue === "") {
-        setUrl("about:blank")
+      if (inputValue === "") {
+        setUrl("about:blank");
       }
       // Try to parse it as a URL
       const url = parseUrl(inputValue);
@@ -235,7 +250,8 @@ export function Navigator() {
 }
 
 export function Browser() {
-  const { url, setUrl, isLoadingPage, setIsLoadingPage } = useBrowserState();
+  const { url, setUrl, isLoadingPage, setIsLoadingPage, setAuthStatus } =
+    useBrowserState();
   const status = useLumeStatus();
   const auth = useAuth();
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -243,7 +259,11 @@ export function Browser() {
   useEffect(() => {
     boot({
       onAuth(authed) {
-        auth.setIsLoggedIn(authed);
+        console.log({authed})
+        setAuthStatus(authed);
+        if (authed === "done") {
+          auth.setIsLoggedIn(true);
+        }
       },
       onBoot(booted) {
         status.setReady(booted);
@@ -256,7 +276,9 @@ export function Browser() {
     );
   }, []);
 
-  const handleIframeLoad = (event: React.SyntheticEvent<HTMLIFrameElement, Event>) => {
+  const handleIframeLoad = (
+    event: React.SyntheticEvent<HTMLIFrameElement, Event>,
+  ) => {
     try {
       const newUrl = iframeRef?.current?.contentWindow?.location.href as string;
       const urlObj = new URL(newUrl);
@@ -267,8 +289,8 @@ export function Browser() {
         setUrl(realUrl);
       }
       const readyState = event.currentTarget.contentDocument?.readyState;
-      console.log("[debug]",{readyState});
-      if(readyState === 'interactive') {
+      console.log("[debug]", { readyState });
+      if (readyState === "interactive") {
         setIsLoadingPage(false);
       }
     } catch (e) {
@@ -285,7 +307,7 @@ export function Browser() {
     if (iframe) {
       const observer = new MutationObserver((mutationsList, observer) => {
         for (let mutation of mutationsList) {
-          console.log("[debug] Mutated ", {mutation})
+          console.log("[debug] Mutated ", { mutation });
           if (
             mutation.type === "attributes" &&
             mutation.attributeName === "src"
@@ -318,14 +340,14 @@ export function Browser() {
             setUrl(_url.toString() || "about:blank");
           }}
         />
-      ) : null} 
+      ) : null}
 
-        <iframe
-          ref={iframeRef}
-          onLoad={handleIframeLoad}
-          src={url ? `/browse/${url}` : "about:blank"}
-          className={`${shouldRenderStartPage ? "hidden": ""} w-full h-full`}
-        ></iframe>
+      <iframe
+        ref={iframeRef}
+        onLoad={handleIframeLoad}
+        src={url ? `/browse/${url}` : "about:blank"}
+        className={`${shouldRenderStartPage ? "hidden" : ""} w-full h-full`}
+      ></iframe>
     </>
   );
 }
