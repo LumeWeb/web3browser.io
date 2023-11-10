@@ -26,6 +26,12 @@ const StartPage = ({ setUrl }: Props) => {
         from the Ethereum Name Service (ENS) and Handshake protocol, providing a
         secure and decentralized browsing experience.
       </p>
+      <p className="text-gray-400 my-4">
+        For further documentation, see:{" "}
+        <a href="https://docs.lumeweb.com/browser-webapp">
+          https://docs.lumeweb.com/browser-webapp
+        </a>
+      </p>
       {/* TODO: Add the lume loading indicators for the networks. */}
       {/* <CircleProgressBar radius={20} strokeWidth={4} textSize={12} percentage={75} /> */}
       {inited && ready ? (
