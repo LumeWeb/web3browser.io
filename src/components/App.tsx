@@ -139,7 +139,7 @@ const Root = () => {
       <LumeStatusProvider>
         <NetworksProvider>
           <AuthProvider>
-            <main className="bg-neutral-950 w-full min-h-screen h-full pt-2 pb-5">
+            <main className="flex flex-col bg-neutral-950 w-full min-h-screen h-full pt-2 pb-5">
               <App />
               <Browser />
             </main>
