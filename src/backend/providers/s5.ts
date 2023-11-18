@@ -2,7 +2,7 @@ import type { ContentProvider } from "../types.js";
 import * as nodePath from "path";
 import { createClient } from "@lumeweb/kernel-s5-client";
 
-export default class IPFSProvider implements ContentProvider {
+export default class S5Provider implements ContentProvider {
   private _client = createClient();
 
   async fetchContent(
