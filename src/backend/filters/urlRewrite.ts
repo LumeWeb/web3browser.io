@@ -33,7 +33,7 @@ export default class URLRewriteFilter implements ContentFilter {
               urlValue.startsWith("http") ||
               (urlValue.startsWith("//") && isICANN(urlValue));
             if (!isExternal || !isICANN(urlValue)) {
-              if (!isExternal) {
+              if (!isExternal && !urlValue.startsWith("/")) {
                 //@ts-ignore
                 urlValue = path.join(rUrl.pathname, urlValue);
               }
@@ -53,7 +53,7 @@ export default class URLRewriteFilter implements ContentFilter {
                 url.startsWith("http") ||
                 (url.startsWith("//") && isICANN(url));
               if (!isExternal || !isICANN(url)) {
-                if (!isExternal) {
+                if (!isExternal && !url.startsWith("/")) {
                   //@ts-ignore
                   url = path.join(rUrl.pathname, url);
                 }
