@@ -5,6 +5,7 @@ import { createClient as createPeerDiscoveryClient } from "@lumeweb/kernel-peer-
 import { createClient as createNetworkRegistryClient } from "@lumeweb/kernel-network-registry-client";
 import { createClient as createHandshakeClient } from "@lumeweb/kernel-handshake-client";
 import { createClient as createEthClient } from "@lumeweb/kernel-eth-client";
+import { createClient as createS5Client } from "@lumeweb/kernel-s5-client";
 
 const dnsClient = createDnsClient();
 const ipfsClient = createIpfsClient();
@@ -13,6 +14,7 @@ const peerDiscoveryClient = createPeerDiscoveryClient();
 const networkRegistryClient = createNetworkRegistryClient();
 const handshakeClient = createHandshakeClient();
 const ethClient = createEthClient();
+const s5Client = createS5Client();
 
 export {
   dnsClient,
@@ -22,4 +24,5 @@ export {
   networkRegistryClient,
   handshakeClient,
   ethClient,
+  s5Client,
 };
