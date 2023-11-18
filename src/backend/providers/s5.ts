@@ -49,6 +49,9 @@ export default class S5Provider implements ContentProvider {
           }
           file = meta.paths[urlPath];
         } else {
+          if (urlPath.startsWith("/")) {
+            urlPath = urlPath.substring(1);
+          }
           if (!(urlPath in meta.paths)) {
             throw new Error("404");
           }
