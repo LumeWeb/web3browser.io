@@ -64,7 +64,7 @@ export default class S5Provider implements ContentProvider {
     headers["Content-Type"] = file.contentType as string;
 
     return new Response(
-      new Blob([(await this._client.cat(cid)) as Uint8Array]),
+      new Blob([(await this._client.cat(file.cid)) as Uint8Array]),
       {
         headers,
       },
