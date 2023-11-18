@@ -15,7 +15,7 @@ export default class S5Provider implements ContentProvider {
     let urlPath = path;
     const parsedPath = nodePath.parse(urlPath);
 
-    if (!cid.startsWith("/s5/") && cid.startsWith("/sia/")) {
+    if (!cid.startsWith("/s5/") && !cid.startsWith("/sia/")) {
       err = "404";
     }
 
