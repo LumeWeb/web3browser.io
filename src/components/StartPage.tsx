@@ -6,6 +6,7 @@ type Props = {
 };
 
 const AVAILABLE_PAGES = [
+  "lumeweb",
   "blockranger.eth",
   "esteroids.eth",
   "ens.eth",
