@@ -55,7 +55,7 @@ export default class URLRewriteFilter implements ContentFilter {
               if (!isExternal || !isICANN(url)) {
                 if (!isExternal) {
                   //@ts-ignore
-                  url = path.join(rUrl.pathname, urlValue);
+                  url = path.join(rUrl.pathname, url);
                 }
                 url = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${url}`;
                 console.log(url);
