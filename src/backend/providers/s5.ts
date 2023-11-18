@@ -37,6 +37,9 @@ export default class S5Provider implements ContentProvider {
         let found = false;
         for (const indexFile of meta.tryFiles) {
           urlPath = nodePath.join(urlPath, indexFile);
+          if (urlPath.startsWith("/")) {
+            urlPath = urlPath.substring(1);
+          }
           if (urlPath in meta.paths) {
             found = true;
             break;
