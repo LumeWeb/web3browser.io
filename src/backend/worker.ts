@@ -2,7 +2,7 @@ import { createClient as createDnsClient } from "@lumeweb/kernel-dns-client";
 import { ProviderManager } from "./providerManager.js";
 import IPFSProvider from "./providers/ipfs.js";
 import URLRewriteFilter from "./filters/urlRewrite.js";
-import S5Provider from "@/backend/providers/s5.ts";
+import S5Provider from "./providers/s5.js";
 
 const dnsClient = createDnsClient();
 
