@@ -55,12 +55,10 @@ export default class URLRewriteFilter implements ContentFilter {
               if (!isExternal || !isICANN(url)) {
                 if (!isExternal) {
                   //@ts-ignore
-                  urlValue = path.join(rUrl.pathname, urlValue);
+                  url = path.join(rUrl.pathname, urlValue);
                 }
-                urlValue = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${urlValue}`;
-                console.log(urlValue);
-
-                $(element).attr(attrName, urlValue);
+                url = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${urlValue}`;
+                console.log(url);
               }
               return `${url} ${descriptor}`;
             });
