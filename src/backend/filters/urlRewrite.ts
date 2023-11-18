@@ -49,9 +49,18 @@ export default class URLRewriteFilter implements ContentFilter {
             let srcsetValues = srcsetValue?.split(",");
             let rewrittenSrcsetValues = srcsetValues?.map((srcsetEntry) => {
               let [url, descriptor] = srcsetEntry.trim().split(" ");
-              if (!url.startsWith("http") && !url.startsWith("//")) {
-                url = path.join(rUrl.pathname, url);
-                url = `${rUrl.protocol}//${rUrl.hostname}/browse/${rUrl.hostname}${url}`;
+              const isExternal =
+                url.startsWith("http") ||
+                (url.startsWith("//") && isICANN(url));
+              if (!isExternal || !isICANN(url)) {
+                if (!isExternal) {
+                  //@ts-ignore
+                  urlValue = path.join(rUrl.pathname, urlValue);
+                }
+                urlValue = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${urlValue}`;
+                console.log(urlValue);
+
+                $(element).attr(attrName, urlValue);
               }
               return `${url} ${descriptor}`;
             });
