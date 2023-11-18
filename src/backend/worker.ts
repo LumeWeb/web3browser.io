@@ -2,11 +2,13 @@ import { createClient as createDnsClient } from "@lumeweb/kernel-dns-client";
 import { ProviderManager } from "./providerManager.js";
 import IPFSProvider from "./providers/ipfs.js";
 import URLRewriteFilter from "./filters/urlRewrite.js";
+import S5Provider from "@/backend/providers/s5.ts";
 
 const dnsClient = createDnsClient();
 
 const providerManager = new ProviderManager();
 providerManager.register(new IPFSProvider());
+providerManager.register(new S5Provider());
 providerManager.processor.registerFilter(new URLRewriteFilter());
 
 globalThis.postMessage = async (...args) => {
