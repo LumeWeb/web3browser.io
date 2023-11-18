@@ -57,7 +57,7 @@ export default class URLRewriteFilter implements ContentFilter {
                   //@ts-ignore
                   url = path.join(rUrl.pathname, urlValue);
                 }
-                url = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${urlValue}`;
+                url = `${swUrl.protocol}//${swUrl.hostname}/browse/${rUrl.hostname}${url}`;
                 console.log(url);
               }
               return `${url} ${descriptor}`;
