@@ -9,7 +9,7 @@ const AVAILABLE_PAGES = [
   "lumeweb",
   "blockranger.eth",
   "esteroids.eth",
-  "ens.eth",
+  // "ens.eth",
   "sogola.eth",
   "vitalik.eth",
 ];
@@ -18,7 +18,7 @@ const StartPage = ({ setUrl }: Props) => {
   const { ready, inited } = useLumeStatus();
   const { isLoggedIn } = useAuth();
   return (
-    <div className="mx-4 relative border rounded-md mt-2 border-neutral-800 p-10 w-[calc(100%-32px)] bg-neutral-900 flex flex-col">
+    <div className="mx-4 relative border rounded-md mt-2 border-neutral-800 p-10 pb-5 w-[calc(100%-32px)] bg-neutral-900 flex flex-col">
       <h2 className="font-bold text-2xl text-white">
         Welcome to the Lume Browser
       </h2>
@@ -29,7 +29,7 @@ const StartPage = ({ setUrl }: Props) => {
       </p>
       <p className="text-gray-400 my-4">
         For further documentation, see:{" "}
-        <a href="https://docs.lumeweb.com/browser-webapp">
+        <a href="https://docs.lumeweb.com/browser-webapp" className="underline text-white">
           https://docs.lumeweb.com/browser-webapp
         </a>
       </p>
@@ -38,6 +38,21 @@ const StartPage = ({ setUrl }: Props) => {
       {inited && ready ? (
         <div>
           <hr className="my-3 border-neutral-700" />
+          <div
+            className="bg-yellow-800/40 rounded-md border border-yellow-500 text-yellow-500 p-4"
+            role="alert"
+          >
+            <p className="font-bold">Disclaimer</p>
+            <p>
+              The sites listed below are the ones we currently support. We're a
+              small team working hard to make this technology possible. We don't
+              endorse any ideological views. Our focus is on building for a free
+              web. The listed sites are examples of what our technology can do
+              today. Please note that we are not hosting or serving any content
+              ourselves and have no control over the content as it's
+              decentralized.
+            </p>
+          </div>
           <h3 className="text-white text-lg font-bold mt-4">
             Currently Accessible Websites:
           </h3>

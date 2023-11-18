@@ -41,8 +41,15 @@ const App: React.FC = () => {
         <div className="py-4 -mb-4 flex flex-row gap-x-3">
           {ethStatus?.syncState === "syncing" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
-              <CircleProgressBar radius={5} strokeWidth={3} percentage={Math.floor(ethStatus.sync)} />
-              <span className="font-bold font-mono text-orange-400 mr-2">{ethStatus.sync.toFixed(1)}%</span> Syncing Ethereum Network
+              <CircleProgressBar
+                radius={5}
+                strokeWidth={3}
+                percentage={Math.floor(ethStatus.sync)}
+              />
+              <span className="font-bold font-mono text-orange-400 mr-2">
+                {ethStatus.sync.toFixed(1)}%
+              </span>{" "}
+              Syncing Ethereum Network
             </span>
           ) : ethStatus?.syncState === "done" ? (
             <span className="flex items-center gap-x-2 rounded-full bg-neutral-800 text-white p-1 px-4 bg">
@@ -132,8 +139,10 @@ const Root = () => {
       <LumeStatusProvider>
         <NetworksProvider>
           <AuthProvider>
-            <App />
-            <Browser />
+            <main className="flex flex-col bg-neutral-950 w-full min-h-screen h-full pt-2 pb-5">
+              <App />
+              <Browser />
+            </main>
           </AuthProvider>
         </NetworksProvider>
       </LumeStatusProvider>
